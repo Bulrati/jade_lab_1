@@ -36,6 +36,16 @@ public class BookSellerAgent extends Agent{
         addBehaviour(new PurchaseOrdersServer());
     }
 
+	protected void takeDown() {
+		try {
+			DFService.deregister(this);
+		}
+		catch (FIPAException fe) {
+			fe.printStackTrace();
+		}
+		System.out.println("Seller-agent "+getAID().getName()+" terminating.");
+    }
+
     private class OfferRequestsServer extends CyclicBehaviour {
 
         public void action() {
