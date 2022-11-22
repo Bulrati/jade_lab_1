@@ -2,6 +2,10 @@ import java.util.Hashtable;
 
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAException;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
@@ -13,6 +17,19 @@ public class BookSellerAgent extends Agent{
         catalogue = new Hashtable();
         catalogue.put("1984", new Integer(54));
         catalogue.put("The-Lord-of-the-rings", new Integer(28));
+
+        DFAgentDescription dfd = new DFAgentDescription();
+		dfd.setName(getAID());
+		ServiceDescription sd = new ServiceDescription();
+		sd.setType("book-selling");
+		sd.setName("JADE-book-trading");
+		dfd.addServices(sd);
+		try {
+			DFService.register(this, dfd);
+		}
+		catch (FIPAException fe) {
+			fe.printStackTrace();
+		}
 
         addBehaviour(new OfferRequestsServer());
 
